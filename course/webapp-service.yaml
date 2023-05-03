@@ -8,7 +8,6 @@ spec:
   #This will set network endpoint
   selector:
     app: webapp    #relate to pod label
-    release: 0-5
 
   ports:
   - name: http        #just label not functional
