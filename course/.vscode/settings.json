@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/v1@pod+v1@service": "file:///c%3A/k8s/course/networking-testing.yaml"
+    }
+}

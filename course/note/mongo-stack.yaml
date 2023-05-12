@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mongodb #Name has to be name but not functional just for human read
+
+spec:
+  replicas: 1
+
+  selector:
+      matchLabels:
+        app: mongodb
+
+  template:
+    metadata:    
+      labels:
+        app: mongodb   #labels can be named as anything example, yournametag: abc
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:3.6.5-jessie
+        volumeMounts:
+          - name: mongo-persistent-storage
+            mountPath: /data/db                #inside container
+      volumes:
+        - name: mongo-persistent-storage
+          #pointer to the configuration of HOW we want the mount to be implemented
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-mongodb
+spec:
+  #This defines which pods are going to controled by service
+  #This will set network endpoint
+  selector:
+    app: mongodb    #relate to pod label
+  ports:
+  - name: mongoport        #just label not functional
+    port: 27017          #app port (app spec)
+    #targetPort: 80    #?
+
+  type: ClusterIP      #NodePort go outside/ loadbalancer is support for loadbalance/ ClusterIP is for internal use(no go outside)
